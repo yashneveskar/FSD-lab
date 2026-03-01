@@ -1,0 +1,168 @@
+/* ===== EXTERNAL CSS FILE ===== */
+
+/* ===== TAG SELECTORS ===== */
+a {
+  color: #e94560;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #c73652;
+  text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+table {
+  font-size: 0.92rem;
+}
+
+ul li, ol li {
+  margin-bottom: 8px;
+  padding: 2px 0;
+}
+
+/* ===== CLASS SELECTORS ===== */
+.product-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(233, 69, 96, 0.15);
+  border-color: #e94560;
+}
+
+.order-form-box {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+.order-summary {
+  background: white;
+  border: 2px solid #e94560;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.contact-box {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 28px;
+  transition: all 0.3s ease;
+}
+
+.contact-box:hover {
+  border-color: #e94560;
+  box-shadow: 0 8px 24px rgba(233, 69, 96, 0.1);
+  transform: translateY(-4px);
+}
+
+/* ===== ID SELECTORS ===== */
+#price-table th {
+  letter-spacing: 0.05em;
+}
+
+#cart-section {
+  background-color: #fff8f0;
+}
+
+/* ===== BORDER ===== */
+.navbar {
+  border-bottom: 3px solid #e94560;
+}
+
+.order-form-box input:focus,
+.order-form-box select:focus,
+.order-form-box textarea:focus {
+  border-color: #e94560;
+  box-shadow: 0 0 0 0.2rem rgba(233, 69, 96, 0.2);
+  outline: none;
+}
+
+/* ===== MARGIN & PADDING ===== */
+section {
+  padding-top: 64px;
+  padding-bottom: 64px;
+  margin-bottom: 0;
+}
+
+footer {
+  padding: 28px 0;
+  margin-top: 0;
+}
+
+.product-card img {
+  margin-bottom: 12px;
+  border-radius: 8px;
+}
+
+/* ===== BACKGROUND IMAGE & POSITION ===== */
+#hero {
+  background-image: url('https://www.transparenttextures.com/patterns/diagmonds.png');
+  background-position: center center;
+  background-repeat: repeat;
+  background-size: auto;
+}
+
+/* ===== NAVIGATION ===== */
+.nav-link {
+  padding: 8px 14px !important;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: #e94560 !important;
+}
+
+.dropdown-item:hover {
+  background-color: #ffeef1;
+  color: #e94560;
+}
+
+/* ===== BUTTONS ===== */
+.btn-danger {
+  background-color: #e94560 !important;
+  border-color: #e94560 !important;
+  transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+  background-color: #c73652 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(233, 69, 96, 0.35);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  #hero {
+    padding: 48px 16px;
+    text-align: center;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .product-card {
+    padding: 14px;
+  }
+
+  .order-form-box {
+    padding: 20px;
+  }
+}
