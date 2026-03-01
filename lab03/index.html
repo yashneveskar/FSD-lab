@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 03 - JavaScript, DOM & jQuery</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f8;
+    }
+
+    .section-card {
+      background: white;
+      border-radius: 14px;
+      padding: 32px;
+      margin-bottom: 32px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      border-top: 4px solid #4f46e5;
+    }
+
+    .section-card.jquery-section {
+      border-top-color: #e94560;
+    }
+
+    .section-card.dom-section {
+      border-top-color: #059669;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* ===== FORM VALIDATION STYLES ===== */
+    .form-control.valid {
+      border-color: #059669;
+      background-color: #f0fdf4;
+    }
+
+    .form-control.invalid {
+      border-color: #dc2626;
+      background-color: #fff5f5;
+    }
+
+    .error-msg {
+      color: #dc2626;
+      font-size: 0.82rem;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .success-msg {
+      color: #059669;
+      font-size: 0.82rem;
+      margin-top: 4px;
+      display: none;
+    }
+
+    /* ===== DOM DEMO STYLES ===== */
+    #dom-box {
+      background: #f8fafc;
+      border: 2px dashed #cbd5e1;
+      border-radius: 10px;
+      padding: 20px;
+      min-height: 80px;
+      font-size: 1rem;
+      color: #1a1a2e;
+      margin-bottom: 16px;
+      transition: all 0.3s ease;
+    }
+
+    #dom-image {
+      width: 200px;
+      height: 130px;
+      border-radius: 10px;
+      border: 3px solid #4f46e5;
+      object-fit: cover;
+    }
+
+    .demo-btn {
+      margin: 4px;
+      font-size: 0.85rem;
+    }
+
+    /* ===== JQUERY DEMO ===== */
+    #jquery-box {
+      background: #fff8f0;
+      border: 2px dashed #f59e0b;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    #result-display {
+      background: #1a1a2e;
+      color: #4ade80;
+      border-radius: 8px;
+      padding: 14px;
+      font-family: monospace;
+      font-size: 0.9rem;
+      min-height: 50px;
+      margin-top: 12px;
+    }
+
+    nav.demo-nav {
+      background: #1a1a2e;
+      padding: 12px 24px;
+      border-radius: 10px;
+      margin-bottom: 24px;
+    }
+
+    nav.demo-nav a {
+      color: #a5b4fc;
+      margin-right: 20px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    nav.demo-nav a:hover {
+      color: #fff;
+    }
+
+    #password-strength {
+      height: 6px;
+      border-radius: 3px;
+      margin-top: 6px;
+      transition: all 0.3s;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="demo-nav">
+    <span style="color:#fff; font-weight:700; margin-right:24px;">🧪 Lab 03</span>
+    <a href="#form-section">Form Validation</a>
+    <a href="#dom-section">DOM Operations</a>
+    <a href="#jquery-section">jQuery</a>
+  </nav>
+
+  <div class="container pb-5">
+    <div class="text-center mb-4">
+      <h2 style="color:#1a1a2e; font-weight:800;">FSD Lab 03</h2>
+      <p class="text-muted">JavaScript Form Validation · DOM Manipulation · jQuery & Ajax</p>
+      <p class="text-muted small">Yash Neveskar · TY CSE Sem 6 · MIT-WPU, Pune</p>
+    </div>
+
+    <!-- ===== SECTION 1: FORM VALIDATION ===== -->
+    <div class="section-card" id="form-section">
+      <div class="section-title">📋 Part 1: Student Registration Form with Validation</div>
+
+      <form id="registrationForm" novalidate>
+        <div class="row g-3">
+
+          <!-- Username -->
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Username <span class="text-danger">*</span></label>
+            <input type="text" id="username" class="form-control" placeholder="Enter username">
+            <div class="error-msg" id="username-error">❌ Username cannot be empty or spaces only.</div>
+            <div class="success-msg" id="username-ok">✅ Looks good!</div>
+          </div>
+
+          <!-- Email -->
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Email Address <span class="text-danger">*</span></label>
+            <input type="text" id="email" class="form-control" placeholder="example@domain.com">
+            <div class="error-msg" id="email-error">❌ Invalid email format.</div>
+            <div class="success-msg" id="email-ok">✅ Valid email!</div>
+          </div>
+
+          <!-- Phone -->
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Phone Number <span class="text-danger">*</span></label>
+            <input type="text" id="phone" class="form-control" placeholder="10-digit number">
+            <div class="error-msg" id="phone-error">❌ Phone must be exactly 10 numeric digits.</div>
+            <div class="success-msg" id="phone-ok">✅ Valid phone number!</div>
+          </div>
+
+          <!-- Password -->
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Password <span class="text-danger">*</span></label>
+            <input type="password" id="password" class="form-control" placeholder="Min 7 chars">
+            <div id="password-strength" style="background:#e5e7eb;"></div>
+            <div class="error-msg" id="password-error">❌ Min 7 chars, 1 uppercase, 1 digit, 1 special char (&,$,#,@).</div>
+            <div class="success-msg" id="password-ok">✅ Strong password!</div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Confirm Password <span class="text-danger">*</span></label>
+            <input type="password" id="confirm-password" class="form-control" placeholder="Re-enter password">
+            <div class="error-msg" id="confirm-error">❌ Passwords do not match.</div>
+            <div class="success-msg" id="confirm-ok">✅ Passwords match!</div>
+          </div>
+
+        </div>
+
+        <div class="mt-4">
+          <button type="submit" class="btn btn-primary fw-bold px-4 me-2" id="submit-btn">
+            Submit Registration
+          </button>
+          <button type="reset" class="btn btn-outline-secondary" onclick="resetForm()">Reset</button>
+        </div>
+
+        <!-- Success Alert -->
+        <div id="form-success" class="alert alert-success mt-3" style="display:none;">
+          🎉 <strong>Registration Successful!</strong> All fields validated correctly.
+        </div>
+
+      </form>
+    </div>
+
+    <!-- ===== SECTION 2: DOM OPERATIONS ===== -->
+    <div class="section-card dom-section" id="dom-section">
+      <div class="section-title">🌐 Part 2: DOM Manipulation</div>
+
+      <!-- DOM Display Box -->
+      <div id="dom-box">
+        <p id="dom-text">This is the <span class="highlight-text">DOM text</span> — click buttons below to manipulate it!</p>
+      </div>
+
+      <!-- DOM Image -->
+      <div class="mb-3">
+        <img id="dom-image"
+             src="https://picsum.photos/seed/image1/200/130"
+             alt="DOM Image">
+      </div>
+
+      <div class="row g-2">
+
+        <!-- getElementById -->
+        <div class="col-12">
+          <strong>getElementById / innerHTML:</strong>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-outline-primary demo-btn" onclick="demoGetById()">
+            Change Text (getElementById)
+          </button>
+        </div>
+
+        <!-- getElementsByTagName -->
+        <div class="col-auto">
+          <button class="btn btn-outline-success demo-btn" onclick="demoGetByTag()">
+            getElementsByTagName
+          </button>
+        </div>
+
+        <!-- getElementsByClassName -->
+        <div class="col-auto">
+          <button class="btn btn-outline-warning demo-btn" onclick="demoGetByClass()">
+            getElementsByClassName
+          </button>
+        </div>
+
+        <!-- Change CSS color -->
+        <div class="col-12 mt-2">
+          <strong>Change CSS Properties:</strong>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-danger demo-btn" onclick="demoChangeColor()">
+            Change Color & Size
+          </button>
+        </div>
+
+        <!-- Change position -->
+        <div class="col-auto">
+          <button class="btn btn-secondary demo-btn" onclick="demoChangePadding()">
+            Change Padding & BG
+          </button>
+        </div>
+
+        <!-- Change image source -->
+        <div class="col-12 mt-2">
+          <strong>Change Image Source:</strong>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-primary demo-btn"
+            onclick="document.getElementById('dom-image').src='https://picsum.photos/seed/image2/200/130'">
+            Change to Image 2
+          </button>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-outline-primary demo-btn"
+            onclick="document.getElementById('dom-image').src='https://picsum.photos/seed/image3/200/130'">
+            Change to Image 3
+          </button>
+        </div>
+
+        <!-- Add text node -->
+        <div class="col-12 mt-2">
+          <strong>Add / Delete Node:</strong>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-success demo-btn" onclick="addTextNode()">
+            Add Text Node
+          </button>
+        </div>
+
+        <!-- Delete node -->
+        <div class="col-auto">
+          <button class="btn btn-outline-danger demo-btn" onclick="deleteNode()">
+            Delete Last Node
+          </button>
+        </div>
+
+        <!-- Reset DOM -->
+        <div class="col-auto">
+          <button class="btn btn-outline-secondary demo-btn" onclick="resetDOM()">
+            Reset DOM Box
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ===== SECTION 3: JQUERY ===== -->
+    <div class="section-card jquery-section" id="jquery-section">
+      <div class="section-title">💛 Part 3: jQuery Operations</div>
+
+      <div id="jquery-box">
+        <p id="jquery-text">This is a paragraph inside the jQuery demo box.</p>
+        <button id="jquery-btn" class="btn btn-warning fw-bold">Original Button Text</button>
+      </div>
+
+      <!-- Result display -->
+      <div id="result-display">// jQuery output will appear here...</div>
+
+      <div class="row g-2 mt-3">
+
+        <!-- Change button text -->
+        <div class="col-12">
+          <strong>jQuery DOM Operations:</strong>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-warning demo-btn" onclick="changeButtonText()">
+            Change Button Text (jQuery)
+          </button>
+        </div>
+
+        <!-- Set background image -->
+        <div class="col-auto">
+          <button class="btn btn-warning demo-btn" onclick="setBackgroundImage()">
+            Set Background Image (jQuery CSS)
+          </button>
+        </div>
+
+        <!-- Add attribute -->
+        <div class="col-auto">
+          <button class="btn btn-warning demo-btn" onclick="addAttributeJQuery()">
+            Add Attribute (jQuery)
+          </button>
+        </div>
+
+        <!-- Access form data -->
+        <div class="col-12 mt-2">
+          <strong>Access Form Data using jQuery:</strong>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-outline-warning demo-btn" onclick="accessFormData()">
+            Get Form Values (jQuery)
+          </button>
+        </div>
+
+        <!-- jQuery AJAX simulation -->
+        <div class="col-12 mt-2">
+          <strong>jQuery Ajax (Simulated):</strong>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-outline-danger demo-btn" onclick="simulateAjax()">
+            Simulate Ajax Request
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- end container -->
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // ============================================================
+    // PART 1: JAVASCRIPT FORM VALIDATION
+    // ============================================================
+
+    function showError(fieldId, errorId, okId) {
+      document.getElementById(fieldId).classList.remove('valid');
+      document.getElementById(fieldId).classList.add('invalid');
+      document.getElementById(errorId).style.display = 'block';
+      document.getElementById(okId).style.display = 'none';
+    }
+
+    function showSuccess(fieldId, errorId, okId) {
+      document.getElementById(fieldId).classList.remove('invalid');
+      document.getElementById(fieldId).classList.add('valid');
+      document.getElementById(errorId).style.display = 'none';
+      document.getElementById(okId).style.display = 'block';
+    }
+
+    // Validate Username - cannot be empty or spaces only
+    function validateUsername() {
+      var val = document.getElementById('username').value;
+      if (val.trim() === '') {
+        showError('username', 'username-error', 'username-ok');
+        return false;
+      }
+      showSuccess('username', 'username-error', 'username-ok');
+      return true;
+    }
+
+    // Validate Email using Regex
+    // Must have: few letters @ 3letters . 2-3 letters
+    function validateEmail() {
+      var val = document.getElementById('email').value;
+      var emailRegex = /^[a-zA-Z]+[a-zA-Z0-9._]*@[a-zA-Z]{3,}\.[a-zA-Z]{2,3}$/;
+      if (!emailRegex.test(val)) {
+        showError('email', 'email-error', 'email-ok');
+        return false;
+      }
+      showSuccess('email', 'email-error', 'email-ok');
+      return true;
+    }
+
+    // Validate Phone - only numeric, exactly 10 digits
+    function validatePhone() {
+      var val = document.getElementById('phone').value;
+      var phoneRegex = /^[0-9]{10}$/;
+      if (!phoneRegex.test(val)) {
+        showError('phone', 'phone-error', 'phone-ok');
+        return false;
+      }
+      showSuccess('phone', 'phone-error', 'phone-ok');
+      return true;
+    }
+
+    // Validate Password - min 7, 1 uppercase, 1 digit, 1 special (&,$,#,@)
+    function validatePassword() {
+      var val = document.getElementById('password').value;
+      var strengthBar = document.getElementById('password-strength');
+      var score = 0;
+
+      if (val.length >= 7) score++;
+      if (/[A-Z]/.test(val)) score++;
+      if (/[0-9]/.test(val)) score++;
+      if (/[&$#@]/.test(val)) score++;
+
+      // Update strength bar
+      var colors = ['#dc2626', '#f59e0b', '#3b82f6', '#059669'];
+      var widths = ['25%', '50%', '75%', '100%'];
+      if (val.length > 0) {
+        strengthBar.style.background = colors[score - 1] || '#dc2626';
+        strengthBar.style.width = widths[score - 1] || '25%';
+      } else {
+        strengthBar.style.width = '0%';
+      }
+
+      var passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[&$#@]).{7,}$/;
+      if (!passwordRegex.test(val)) {
+        showError('password', 'password-error', 'password-ok');
+        return false;
+      }
+      showSuccess('password', 'password-error', 'password-ok');
+      return true;
+    }
+
+    // Validate Confirm Password - must match password
+    function validateConfirmPassword() {
+      var pass = document.getElementById('password').value;
+      var confirm = document.getElementById('confirm-password').value;
+      if (confirm === '' || pass !== confirm) {
+        showError('confirm-password', 'confirm-error', 'confirm-ok');
+        return false;
+      }
+      showSuccess('confirm-password', 'confirm-error', 'confirm-ok');
+      return true;
+    }
+
+    // Live validation on input
+    document.getElementById('username').addEventListener('input', validateUsername);
+    document.getElementById('email').addEventListener('input', validateEmail);
+    document.getElementById('phone').addEventListener('input', validatePhone);
+    document.getElementById('password').addEventListener('input', function() {
+      validatePassword();
+      validateConfirmPassword();
+    });
+    document.getElementById('confirm-password').addEventListener('input', validateConfirmPassword);
+
+    // Form Submit
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var v1 = validateUsername();
+      var v2 = validateEmail();
+      var v3 = validatePhone();
+      var v4 = validatePassword();
+      var v5 = validateConfirmPassword();
+
+      if (v1 && v2 && v3 && v4 && v5) {
+        document.getElementById('form-success').style.display = 'block';
+        setTimeout(function() {
+          document.getElementById('form-success').style.display = 'none';
+        }, 4000);
+      }
+    });
+
+    function resetForm() {
+      ['username','email','phone','password','confirm-password'].forEach(function(id) {
+        document.getElementById(id).classList.remove('valid','invalid');
+      });
+      ['username-error','email-error','phone-error','password-error','confirm-error',
+       'username-ok','email-ok','phone-ok','password-ok','confirm-ok','form-success'].forEach(function(id) {
+        document.getElementById(id).style.display = 'none';
+      });
+      document.getElementById('password-strength').style.width = '0%';
+    }
+
+    // ============================================================
+    // PART 2: DOM MANIPULATION
+    // ============================================================
+
+    // ---- 5 DOM BUTTON FUNCTIONS ----
+
+    // 1. getElementById + innerHTML
+    function demoGetById() {
+      resetDOM(); // always reset first so dom-text exists
+      document.getElementById('dom-text').innerHTML =
+        '✅ Text changed using <b>getElementById</b> + <b>innerHTML</b>!';
+    }
+
+    // 2. getElementsByTagName
+    function demoGetByTag() {
+      resetDOM();
+      var box = document.getElementById('dom-box');
+      var tags = box.getElementsByTagName('p');
+      if (tags.length > 0) {
+        tags[0].innerHTML = '✅ Changed using <b>getElementsByTagName</b>!';
+        tags[0].style.color = '#059669';
+      }
+    }
+
+    // 3. getElementsByClassName
+    function demoGetByClass() {
+      resetDOM();
+      var els = document.getElementById('dom-box').getElementsByClassName('highlight-text');
+      if (els.length > 0) {
+        els[0].innerHTML = 'ClassName ✅';
+        els[0].style.background = '#fef3c7';
+        els[0].style.padding = '2px 6px';
+        els[0].style.borderRadius = '4px';
+      }
+    }
+
+    // 4. Change CSS color & size
+    function demoChangeColor() {
+      var el = document.getElementById('dom-text');
+      if (!el) { resetDOM(); el = document.getElementById('dom-text'); }
+      el.style.color = '#dc2626';
+      el.style.fontSize = '1.3rem';
+      el.style.fontWeight = '700';
+    }
+
+    // 5. Change padding & background
+    function demoChangePadding() {
+      document.getElementById('dom-box').style.padding = '40px';
+      document.getElementById('dom-box').style.background = '#e0e7ff';
+      document.getElementById('dom-box').style.borderColor = '#4f46e5';
+    }
+
+    // Add a new text node to dom-box
+    function addTextNode() {
+      var box = document.getElementById('dom-box');
+      var newP = document.createElement('p');
+      var textNode = document.createTextNode('✅ New text node added using createElement + createTextNode + appendChild!');
+      newP.appendChild(textNode);
+      newP.style.color = '#059669';
+      newP.style.fontWeight = '600';
+      newP.className = 'added-node';
+      box.appendChild(newP);
+    }
+
+    // Delete last added node
+    function deleteNode() {
+      var box = document.getElementById('dom-box');
+      var nodes = box.getElementsByClassName('added-node');
+      if (nodes.length > 0) {
+        box.removeChild(nodes[nodes.length - 1]);
+        alert('Last added node deleted!');
+      } else {
+        alert('No added nodes to delete!');
+      }
+    }
+
+    // Reset DOM box
+    function resetDOM() {
+      document.getElementById('dom-box').innerHTML =
+        '<p id="dom-text">This is the <span class="highlight-text">DOM text</span> — click buttons below to manipulate it!</p>';
+      document.getElementById('dom-box').style.padding = '20px';
+      document.getElementById('dom-box').style.background = '#f8fafc';
+      document.getElementById('dom-image').src = 'https://picsum.photos/seed/image1/200/130';
+    }
+
+    // ============================================================
+    // PART 3: JQUERY OPERATIONS
+    // ============================================================
+
+    // Change button text using jQuery
+    function changeButtonText() {
+      $('#jquery-btn').text('✅ Button Text Changed by jQuery!');
+      $('#result-display').html('> $("#jquery-btn").text("Button Text Changed by jQuery!");<br>> Done!');
+    }
+
+    // Set background image using jQuery CSS
+    function setBackgroundImage() {
+      $('#jquery-box').css({
+        'background-image': 'linear-gradient(135deg, #fff8e7, #ffecd2)',
+        'background-size': 'cover',
+        'border-color': '#f59e0b'
+      });
+      $('#result-display').html('> $("#jquery-box").css("background-image", "linear-gradient(...)");<br>> Background updated!');
+    }
+
+    // Add attribute using jQuery
+    function addAttributeJQuery() {
+      $('#jquery-btn').attr('data-info', 'added-by-jquery');
+      $('#jquery-btn').attr('title', 'This button has a jQuery-added attribute!');
+      var attrVal = $('#jquery-btn').attr('data-info');
+      $('#result-display').html('> $("#jquery-btn").attr("data-info", "added-by-jquery");<br>> Attribute value: ' + attrVal);
+    }
+
+    // Access form data using jQuery
+    function accessFormData() {
+      var username = $('#username').val() || '(empty)';
+      var email    = $('#email').val()    || '(empty)';
+      var phone    = $('#phone').val()    || '(empty)';
+      $('#result-display').html(
+        '> Form Data accessed via jQuery:<br>' +
+        '> Username: <b>' + username + '</b><br>' +
+        '> Email: <b>' + email + '</b><br>' +
+        '> Phone: <b>' + phone + '</b>'
+      );
+    }
+
+    // Simulate jQuery Ajax
+    function simulateAjax() {
+      $('#result-display').html('> $.ajax({ url: "api/data", method: "GET" })<br>> Sending request...');
+      setTimeout(function() {
+        $.ajax({
+          url: 'https://jsonplaceholder.typicode.com/users/1',
+          method: 'GET',
+          success: function(data) {
+            $('#result-display').html(
+              '> Ajax SUCCESS! Response received:<br>' +
+              '> Name: <b>' + data.name + '</b><br>' +
+              '> Email: <b>' + data.email + '</b><br>' +
+              '> Phone: <b>' + data.phone + '</b>'
+            );
+          },
+          error: function() {
+            $('#result-display').html('> Ajax call simulated successfully!<br>> (Network restricted in this environment)');
+          }
+        });
+      }, 800);
+    }
+
+  </script>
+
+</body>
+</html>
